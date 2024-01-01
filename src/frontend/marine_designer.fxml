@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="frontend.MarineController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="1500.0">
+
+    <children>
+        <StackPane fx:id="oceanView" layoutX="-6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="1178.0">
+
+            <!-- Add background image to oceanView -->
+            <ImageView fitHeight="726.0" fitWidth="1181.0">
+                <image>
+                    <Image url="@/image/ocean.jpg" />
+                </image>
+            </ImageView>
+
+            <!-- Add VBox with panes on top of the ocean image -->
+            <VBox alignment="CENTER">
+
+                <!-- First transparent Pane on top of the ocean image -->
+                <Pane fx:id="sunlightZone" prefHeight="63.0" prefWidth="1178.0" style="-fx-background-color: rgba(0, 0, 0, 0); -fx-border-bottom: 2px solid black;" VBox.vgrow="ALWAYS">
+                    <!-- Content for the first pane -->
+                </Pane>
+
+                <!-- Second transparent Pane on top of the ocean image -->
+                <Pane fx:id="twilightZone" prefHeight="184.0" prefWidth="1178.0" style="-fx-background-color: rgba(0, 0, 0, 0); -fx-border-bottom: 2px solid black;" VBox.vgrow="ALWAYS">
+                    <!-- Content for the second pane -->
+                </Pane>
+
+                <!-- Third transparent Pane on top of the ocean image -->
+                <Pane fx:id="midnightZone" prefHeight="161.0" prefWidth="1178.0" style="-fx-background-color: rgba(0, 0, 0, 0); -fx-border-bottom: 2px solid black;" VBox.vgrow="ALWAYS">
+                    <!-- Content for the third pane -->
+                </Pane>
+
+            </VBox>
+        </StackPane>
+
+        <!-- Use StackPane instead of BorderPane -->
+        <BorderPane fx:id="sideMenu" layoutX="1173.0" layoutY="-2.0" prefHeight="636.0" prefWidth="328.0" style="-fx-background-color: #adb0ff;">
+            <effect>
+                <DropShadow color="#000000" height="10.0" offsetX="5.0" offsetY="5.0" radius="5.0" width="10.0" />
+            </effect>
+            <top>
+                <BorderPane id="gameMenu" fx:id="commandMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="306.0" style="-fx-background-color: rgba(173, 216, 230, 0.5); -fx-background-radius: 10;" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </BorderPane.margin>
+                    <center>
+                        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                        <Pane prefHeight="200.0" prefWidth="200.0">
+                                            <children>
+                                                <Label layoutX="21.0" layoutY="28.0" text="Light :" textFill="#9a2392">
+                                                    <font>
+                                                        <Font name="Segoe UI Black" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="96.0" layoutY="28.0" text="OFF" textFill="#9a2392">
+                                                    <font>
+                                                        <Font name="Segoe UI Black" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label layoutX="236.0" layoutY="28.0" text="ON" textFill="#9a2392">
+                                                    <font>
+                                                        <Font name="Segoe UI Black" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Pane fx:id="lightToggle" layoutX="159.0" layoutY="27.0" prefHeight="41.0" prefWidth="79.0" />
+                                                <Hyperlink fx:id="undoBtn" layoutX="285.0" layoutY="3.0" />
+                                            </children>
+                                        </Pane>
+                                        <Pane prefHeight="200.0" prefWidth="200.0">
+                                            <children>
+                                                <Label layoutX="21.0" layoutY="28.0" text="Audio :" textFill="#9a2392">
+                                                    <font>
+                                                        <Font name="Segoe UI Black" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Button fx:id="audioOnButton"  layoutX="100.0" layoutY="22.0" text="ON" style="-fx-background-color: white; -fx-background-radius: 50;" textFill="#9a2392" onAction="#handleAudioOnButtonClick">
+                                                    <font>
+                                                        <Font name="Segoe UI Black" size="18.0" />
+                                                    </font>
+                                                </Button>
+                                                <Button fx:id="audioOffButton"  layoutX="175.0" layoutY="22.0" text="OFF" style="-fx-background-color: white; -fx-background-radius: 50;" textFill="#9a2392" onAction="#handleAudioOffButtonClick">
+                                                    <font>
+                                                        <Font name="Segoe UI Black" size="18.0" />
+                                                    </font>
+                                                </Button>
+                                            </children>
+                                        </Pane>
+
+                                    </children>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                    </center>
+                </BorderPane>
+            </top>
+
+            <bottom>
+                <StackPane fx:id="fishMenu" prefHeight="544.0" prefWidth="328.0" style="-fx-background-color: #52adc4; -fx-padding: 10;" BorderPane.alignment="CENTER">
+                    <VBox spacing="10">
+
+                        <!-- First Pane in the column -->
+                        <Pane fx:id="sunlightMenu" prefHeight="210.67" prefWidth="308.0" style="-fx-background-color: rgba(173, 216, 230, 0.5); -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
+                            <!-- Content for the first pane -->
+                        </Pane>
+
+                        <!-- Second Pane in the column -->
+                        <Pane fx:id="twilightMenu" prefHeight="210.67" prefWidth="308.0" style="-fx-background-color: rgba(173, 216, 230, 0.5); -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
+                            <!-- Content for the second pane -->
+                        </Pane>
+
+                        <!-- Third Pane in the column -->
+                        <Pane fx:id="midnightMenu" prefHeight="210.67" prefWidth="308.0" style="-fx-background-color: rgba(173, 216, 230, 0.5); -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
+                            <!-- Content for the third pane -->
+                        </Pane>
+
+                    </VBox>
+                </StackPane>
+            </bottom>
+        </BorderPane>
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+        </GridPane>
+    </children>
+</AnchorPane>
+</ScrollPane>
