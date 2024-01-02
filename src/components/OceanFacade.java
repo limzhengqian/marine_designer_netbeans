@@ -2,7 +2,6 @@ package components;
 
 import components.decoration.Decoration;
 import components.decoration.DecorationFactory;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +57,9 @@ public class OceanFacade {
         return null;
     }
 
-    public boolean createFishInMenu(String name, String type, String fishImagePath) {
+    public boolean createFishInMenu(String name, String type) {
         DecorationFactory factory = getDecorationFactory(type);
-        Decoration fish = factory.createFish(name, type, fishImagePath);
+        Decoration fish = factory.createFish(name, type);
 
         if (fish != null) {
             decorationMenuList.add(fish);

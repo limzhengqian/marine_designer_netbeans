@@ -2,19 +2,15 @@ package components.decoration;
 
 public class TwilightZoneFactory implements DecorationFactory {
 
-    private static final String COLOR_CLARITY = "Moderate";
-    private static final double MIN_Y_COORDINATE = 0;
-    private static final double MAX_Y_COORDINATE = 100;
+    private static final String ANGLERFISH_IMAGE_PATH = "/image/Fish/TwilightZone/anglerfish.png";
+    private static final String FISH5_IMAGE_PATH = "/image/Fish/TwilightZone/fish5.png";
+    private static final String COLOR_CLARITY = "High";
 
     @Override
-    public Decoration createFish(String name, String type, String imagePath) {
-        if (MIN_Y_COORDINATE > 0) {
-            throw new IllegalArgumentException("Fish in the twilight zone must be placed above the specified y-coordinate.");
-        }
-        if (MAX_Y_COORDINATE <= 0) {
-            throw new IllegalArgumentException("Fish in the twilight zone must be placed below the specified y-coordinate.");
-        }
-
+    public Decoration createFish(String name, String type) {
+        String imagePath = name.endsWith("1") || name.endsWith("2") || name.endsWith("3") || name.endsWith("4")
+                ? ANGLERFISH_IMAGE_PATH
+                : FISH5_IMAGE_PATH;
         Fish fish = new Fish(name, type, imagePath);
         fish.setColorClarity(COLOR_CLARITY);
         return fish;

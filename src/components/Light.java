@@ -17,11 +17,11 @@ public class Light {
 
     public void on(boolean undo){
         controller.setDefaultBrightness(0);
-        controller.updateUndoAvailablity(true);
+//        controller.updateUndoAvailablity(true);
     }
 
     public void off(boolean undo){
         controller.setDefaultBrightness(-0.5);
-        controller.updateUndoAvailablity(true);
+//        controller.updateUndoAvailablity(true);
     }
 }

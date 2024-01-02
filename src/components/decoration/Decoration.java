@@ -2,7 +2,6 @@ package components.decoration;
 
 public class Decoration {
     protected String name, type, imagePath, colorClarity;
-    protected int id = 0;
 
     public Decoration(String name, String type, String imagePath) {
         this.name = name;

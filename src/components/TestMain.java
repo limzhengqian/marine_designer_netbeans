@@ -18,8 +18,8 @@ public class TestMain {
         OceanFacade oceanFacade = new OceanFacade(ocean, sunlightZoneFactory, twilightZoneFactory, midnightZoneFactory);
 
         // Create and add fishes to the menu
-        oceanFacade.createFishInMenu("Nemo", "Sunlight", "nemo_image.png");
-        oceanFacade.createFishInMenu("Dory", "Twilight", "dory_image.png");
+        oceanFacade.createFishInMenu("Nemo", "Sunlight");
+        oceanFacade.createFishInMenu("Dory", "Twilight");
 
         // Display the fish menu
         List<Decoration> fishMenuList = oceanFacade.getDecorationMenuList();

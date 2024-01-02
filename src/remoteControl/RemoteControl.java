@@ -1,19 +1,27 @@
 package remoteControl;
 
+import components.logger.Logger;
+
 public class RemoteControl {
     Command [] onCommands;
     Command [] offCommands;
 
     Command undoCommand;
 
-    public RemoteControl(){
+    Logger logger;
+
+    public RemoteControl(Logger logger){
+        this.logger = logger;
+
         onCommands = new Command[10];
         offCommands = new Command[10];
+
         Command noCommand = new NoCommand();
         for(int i=0;i<10;i++){
             onCommands[i] = noCommand;
             offCommands[i] = noCommand;
         }
+
         undoCommand = noCommand;
     }
 
@@ -25,13 +33,14 @@ public class RemoteControl {
     public void onButtonWasPushed(int slot){
         onCommands[slot].execute();
         undoCommand = onCommands[slot];
+        logger.execute(onCommands[slot]);
     }
 
     public void offButtonWasPushed(int slot){
         offCommands[slot].execute();
         undoCommand = offCommands[slot];
+        logger.execute(offCommands[slot]);
     }
-
     public void undoButtonWasPushed(){
         undoCommand.undo();
         undoCommand = new NoCommand();

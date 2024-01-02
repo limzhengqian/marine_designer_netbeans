@@ -2,6 +2,7 @@ package remoteControl;
 
 import components.audio.AudioPlaylist;
 import components.audio.StartAudioStrategy;
+import components.logger.Logger;
 
 public class AudioOnCommand implements Command {
 
@@ -22,11 +23,21 @@ public class AudioOnCommand implements Command {
 
     @Override
     public void execute() {
-        audioPlaylist.getNextAudio().on();
+        Logger logger = Logger.getInstance();
+        try {
+            audioPlaylist.getNextAudio().on();
+        } catch (Exception e) {
+            logger.logError("Error in AudioOnCommand: " ,e);
+        }
     }
 
     @Override
     public void undo() {
-        audioPlaylist.getCurrentAudio().off();
+        Logger logger = Logger.getInstance();
+        try {
+            audioPlaylist.getCurrentAudio().off();
+        } catch (Exception e) {
+            logger.logError("Error undo in AudioOnCommand: ",e);
+        }
     }
 }

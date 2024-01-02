@@ -69,23 +69,23 @@
                                     <children>
                                         <Pane prefHeight="200.0" prefWidth="200.0">
                                             <children>
-                                                <Label layoutX="21.0" layoutY="28.0" text="Light :" textFill="#9a2392">
+                                                <Label layoutX="21.0" layoutY="27.0" text="Light :" textFill="#9a2392">
                                                     <font>
                                                         <Font name="Segoe UI Black" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label layoutX="96.0" layoutY="28.0" text="OFF" textFill="#9a2392">
+                                                <Label layoutX="96.0" layoutY="27.0" text="OFF" textFill="#9a2392">
                                                     <font>
                                                         <Font name="Segoe UI Black" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label layoutX="236.0" layoutY="28.0" text="ON" textFill="#9a2392">
+                                                <Label layoutX="215.0" layoutY="27.0" text="ON" textFill="#9a2392">
                                                     <font>
                                                         <Font name="Segoe UI Black" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Pane fx:id="lightToggle" layoutX="159.0" layoutY="27.0" prefHeight="41.0" prefWidth="79.0" />
-                                                <Hyperlink fx:id="undoBtn" layoutX="285.0" layoutY="3.0" />
+                                                <Pane fx:id="lightToggle" layoutX="153.0" layoutY="26.0" prefHeight="41.0" prefWidth="79.0" />
+                                    <Hyperlink fx:id="undoLightBtn" layoutX="266.0" layoutY="28.0" />
                                             </children>
                                         </Pane>
                                         <Pane prefHeight="200.0" prefWidth="200.0">
@@ -95,16 +95,17 @@
                                                         <Font name="Segoe UI Black" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Button fx:id="audioOnButton"  layoutX="100.0" layoutY="22.0" text="ON" style="-fx-background-color: white; -fx-background-radius: 50;" textFill="#9a2392" onAction="#handleAudioOnButtonClick">
+                                                <Button fx:id="audioOnButton" layoutX="100.0" layoutY="22.0" onAction="#handleAudioOnButtonClick" style="-fx-background-color: white; -fx-background-radius: 50;" text="ON" textFill="#9a2392">
                                                     <font>
                                                         <Font name="Segoe UI Black" size="18.0" />
                                                     </font>
                                                 </Button>
-                                                <Button fx:id="audioOffButton"  layoutX="175.0" layoutY="22.0" text="OFF" style="-fx-background-color: white; -fx-background-radius: 50;" textFill="#9a2392" onAction="#handleAudioOffButtonClick">
+                                                <Button fx:id="audioOffButton" layoutX="175.0" layoutY="22.0" onAction="#handleAudioOffButtonClick" style="-fx-background-color: white; -fx-background-radius: 50;" text="OFF" textFill="#9a2392">
                                                     <font>
                                                         <Font name="Segoe UI Black" size="18.0" />
                                                     </font>
                                                 </Button>
+                                                <Hyperlink fx:id="undoAudioBtn" layoutX="264.0" layoutY="29.0" onAction="#handleAudioUndoButtonClick" />
                                             </children>
                                         </Pane>
 

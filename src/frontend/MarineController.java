@@ -10,6 +10,7 @@ import components.decoration.DecorationFactory;
 import components.decoration.MidnightZoneFactory;
 import components.decoration.SunlightZoneFactory;
 import components.decoration.TwilightZoneFactory;
+import components.logger.Logger;
 import javafx.animation.FillTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -40,7 +41,6 @@ import remoteControl.LightOnCommand;
 import remoteControl.RemoteControl;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +65,11 @@ public class MarineController {
     private Pane lightToggle;
 
     @FXML
-    private Hyperlink undoBtn;
+    private Hyperlink undoLightBtn;
+
+    @FXML
+    private Hyperlink undoAudioBtn;
+
 
     @FXML
     private Button audioOnButton;
@@ -80,10 +84,12 @@ public class MarineController {
     private Map<Decoration, ImageView> fishImageViews = new HashMap<>();
 
     private RemoteControl remoteControl;
-
+    private Logger logger;
 
     @FXML
     private void initialize() {
+        logger = Logger.getInstance();
+
         ocean = new Ocean();
         DecorationFactory sunlightZoneFactory = new SunlightZoneFactory();
         DecorationFactory twilightZoneFactory = new TwilightZoneFactory();
@@ -99,7 +105,7 @@ public class MarineController {
         displayFishInMenu("Midnight", midnightMenu);
 
         //slot 0 for light
-        remoteControl = new RemoteControl();
+        remoteControl = new RemoteControl(logger);
         setLightCommand();
         setAudioCommand();
 
@@ -110,36 +116,31 @@ public class MarineController {
         colorAdjust.setBrightness(-0.5);
         oceanView.setEffect(colorAdjust);
 
-        Image undoImg = new Image("image/undo.png");
-        ImageView view = new ImageView(undoImg);
-        view.setFitHeight(20);
-        view.setPreserveRatio(true);
-        undoBtn.setGraphic(view);
-        undoBtn.setBorder(Border.EMPTY);
-        undoBtn.setPadding(new Insets(4, 0, 4, 0));
-        undoBtn.setOnAction(e -> undoClicked(toggleSwitch));
-        undoBtn.setDisable(true);
+        Image undoLightImg = new Image("image/undoLight.png");
+        Image undoAudioImg = new Image("image/undoAudio.png");
+        ImageView viewLight = new ImageView(undoLightImg);
+        ImageView viewAudio = new ImageView(undoAudioImg);
+        viewLight.setFitHeight(30);
+        viewAudio.setFitHeight(30);
+        viewLight.setPreserveRatio(true);
+        viewAudio.setPreserveRatio(true);
+        undoLightBtn.setGraphic(viewLight);
+        undoLightBtn.setBorder(Border.EMPTY);
+        undoLightBtn.setPadding(new Insets(4, 0, 4, 0));
+        undoLightBtn.setOnAction(e -> handleLightUndoButtonClick(toggleSwitch));
+        undoLightBtn.setDisable(true);
+        undoAudioBtn.setGraphic(viewAudio);
+        undoAudioBtn.setBorder(Border.EMPTY);
+        undoAudioBtn.setPadding(new Insets(4, 0, 4, 0));
+//        undoAudioBtn.setOnAction(e -> undoClicked(toggleSwitch));
+        undoAudioBtn.setOnAction(e -> handleAudioUndoButtonClick());
+        undoAudioBtn.setDisable(true);
     }
 
     private void createFish(String zone, int count) {
-        String fishImagePath;
-        switch (zone.toLowerCase()) {
-            case "midnight":
-                fishImagePath = getClass().getResource("/image/Fish/MidnightZone/dolphin.png").toExternalForm();
-                break;
-            case "twilight":
-                fishImagePath = getClass().getResource("/image/Fish/TwilightZone/anglerfish.png").toExternalForm();
-                break;
-            case "sunlight":
-                fishImagePath = getClass().getResource("/image/Fish/SunlightZone/blobfish.png").toExternalForm();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid zone for fish creation: " + zone);
-        }
-
         for (int i = 1; i <= count; i++) {
             String fishName = zone + "Fish" + i;
-            oceanFacade.createFishInMenu(fishName, zone, fishImagePath);
+            oceanFacade.createFishInMenu(fishName, zone);
         }
     }
 
@@ -205,33 +206,43 @@ public class MarineController {
     }
 
     public void placeFish(Decoration fish, Button xBadge) {
-        if (!fishImageViews.containsKey(fish)) {
-            ImageView fishImageView = new ImageView(new Image(fish.getImagePath()));
-            fishImageView.setFitHeight(70);
-            fishImageView.setFitWidth(70);
+        Logger logger = Logger.getInstance();
+        try {
+            if (!fishImageViews.containsKey(fish)) {
+                ImageView fishImageView = new ImageView(new Image(fish.getImagePath()));
+                fishImageView.setFitHeight(70);
+                fishImageView.setFitWidth(70);
 
-            Pane zonePane = getZonePane(fish.getType());
-            fishImageView.setLayoutX(getFishXPosition(zonePane));
-            fishImageView.setLayoutY(getFishYPosition(fish, zonePane));
+                Pane zonePane = getZonePane(fish.getType());
+                fishImageView.setLayoutX(getFishXPosition(zonePane));
+                fishImageView.setLayoutY(getFishYPosition(fish, zonePane));
 
-            zonePane.getChildren().add(fishImageView);
-            fishImageViews.put(fish, fishImageView);
+                zonePane.getChildren().add(fishImageView);
+                fishImageViews.put(fish, fishImageView);
 
-            oceanFacade.addFishInOcean(fish.getName(), fish.getType());
-            xBadge.setVisible(true);
+                oceanFacade.addFishInOcean(fish.getName(), fish.getType());
+                xBadge.setVisible(true);
+            }
+        } catch (Exception e) {
+            logger.logError("Error in placeFish: ", e);
         }
     }
 
     public void removeFish(Decoration fish, Button fishButton, Button xBadge) {
-        ImageView fishImageView = fishImageViews.get(fish);
-        if (fishImageView != null) {
-            Pane zonePane = getZonePane(fish.getType());
-            zonePane.getChildren().remove(fishImageView);
-            fishImageViews.remove(fish);
+        Logger logger = Logger.getInstance();
+        try {
+            ImageView fishImageView = fishImageViews.get(fish);
+            if (fishImageView != null) {
+                Pane zonePane = getZonePane(fish.getType());
+                zonePane.getChildren().remove(fishImageView);
+                fishImageViews.remove(fish);
 
-            oceanFacade.removeDecorationInOcean(fish);
-            fishButton.setDisable(false);
-            xBadge.setVisible(false);
+                oceanFacade.removeDecorationInOcean(fish);
+                fishButton.setDisable(false);
+                xBadge.setVisible(false);
+            }
+        } catch (Exception e) {
+            logger.logError("Error in removeFish: ",e);
         }
     }
 
@@ -260,9 +271,14 @@ public class MarineController {
     }
 
     public void offMediaPlayer() {
-        // Stop the audio
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
+        Logger logger = Logger.getInstance();
+        try {
+            // Stop the audio
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+        } catch (Exception e) {
+            logger.logError("Error in offMediaPlayer: ",e);
         }
     }
 
@@ -325,7 +341,7 @@ public class MarineController {
     }
 
     public void updateUndoAvailablity(boolean available){
-        undoBtn.setDisable(available);
+        undoLightBtn.setDisable(available);
     }
 
     private void setAudioCommand() {
@@ -337,13 +353,49 @@ public class MarineController {
 
     @FXML
     protected void handleAudioOnButtonClick() {
-        offMediaPlayer();
-        remoteControl.onButtonWasPushed(1);
+        Logger logger = Logger.getInstance();
+        try {
+            undoAudioBtn.setDisable(false);
+            offMediaPlayer();
+            remoteControl.onButtonWasPushed(1);
+        } catch (Exception e) {
+            logger.logError("Error in handleAudioOnButtonClick: ",e);
+        }
     }
 
     @FXML
     protected void handleAudioOffButtonClick() {
-//        offMediaPlayer();
-        remoteControl.offButtonWasPushed(1);
+        Logger logger = Logger.getInstance();
+        try {
+            undoAudioBtn.setDisable(false);
+//            offMediaPlayer();
+            remoteControl.offButtonWasPushed(1);
+        } catch (Exception e) {
+            logger.logError("Error in handleAudioOffButtonClick: ",e);
+        }
+
+    }
+
+   
+    protected void handleLightUndoButtonClick(ToggleSwitch toggle) {
+        Logger logger = Logger.getInstance();
+        try {
+            boolean canUndo = logger.undoLight();
+            undoLightBtn.setDisable(!canUndo);
+            toggle.toggle();
+        } catch (Exception e) {
+            logger.logError("Error in handleLightUndoButtonClick: ", e);
+        }
+    }
+
+    @FXML
+    protected void handleAudioUndoButtonClick() {
+        Logger logger = Logger.getInstance();
+        try {
+            boolean canUndo = logger.undoAudio();
+            undoAudioBtn.setDisable(!canUndo);
+        } catch (Exception e) {
+            logger.logError("Error in handleAudioOffButtonClick: ",e);
+        }
     }
 }
