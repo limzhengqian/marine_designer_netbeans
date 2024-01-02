@@ -1,2 +1,4 @@
-Light Command History Logs - 2024-01-02 11:36:27
-2024-01-02 11:36:32 - Executed: remoteControl.LightOnCommand@71a50971
+Light Command History Logs - 2024-01-02 11:41:57
+2024-01-02 11:42:00 - Executed: remoteControl.LightOnCommand@6adb6d98
+2024-01-02 11:42:01 - Undo: remoteControl.LightOnCommand@6adb6d98
+2024-01-02 11:42:02 - Executed: remoteControl.LightOnCommand@6adb6d98
