@@ -31,15 +31,13 @@ public class RemoteControl {
     }
 
     public void onButtonWasPushed(int slot){
-        onCommands[slot].execute();
-        undoCommand = onCommands[slot];
         logger.execute(onCommands[slot]);
+        undoCommand = onCommands[slot];
     }
 
     public void offButtonWasPushed(int slot){
-        offCommands[slot].execute();
-        undoCommand = offCommands[slot];
         logger.execute(offCommands[slot]);
+        undoCommand = offCommands[slot];
     }
     public void undoButtonWasPushed(){
         undoCommand.undo();
